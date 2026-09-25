@@ -3,3 +3,72 @@
 我打算分功能区来写函数
 先完成收银部分，即level one
 */
+/*预计先写商品的相关信息数字化*/
+
+ /* 功能：
+输入条码，显示对应商品的名称与价格
+输入 prices，列出所有商品的名称、条码、价格
+输入 quit / exit 退出
+ */
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_ITEMS 50  /*定义商品数量上界*/
+
+typedef struct {
+    char code[10];   // 条码
+    char name[20];   // 商品名
+    double price;    // 价格
+} Item;
+
+Item items[MAX_ITEMS] = {
+    {"001", "Cola",     3.50},
+    {"002", "Lollipop", 0.50},
+    {"003", "Noodles",  6.00}
+};
+int item_count = 3;
+
+// 根据条码查找商品，返回下标，找不到返回 -1
+int find_item(const char *code) {
+    for (int i = 0; i < item_count; i++) {
+        if (strcmp(items[i].code, code) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// 打印所有商品
+void print_prices(void) {
+    printf("Item No. Pri.\n");
+    for (int i = 0; i < item_count; i++) {
+        printf("%-10s %-5s %.2f\n", items[i].name, items[i].code, items[i].price);
+    }
+}
+
+int main(void) {
+    char input[20];
+
+    while (1) {
+        printf("> ");
+        scanf("%s", input);
+
+        if (strcmp(input, "quit") == 0 || strcmp(input, "exit") == 0) {
+            break;
+        } else if (strcmp(input, "prices") == 0) {
+            print_prices();
+        } else {
+            int idx = find_item(input);
+            if (idx >= 0) {
+                printf("%s %.2f\n", items[idx].name, items[idx].price);
+            } else {
+                printf("ERROR: code not found\n");
+            }
+        }
+    }
+
+    return 0;
+}
+
+/*写到这里的时候我意识到似乎如果把一个项目拆成一个文件夹，然后文件里面包含任意一个小项目的形式似乎会更方便*/
+/*于是前面写的都作废吧，我再来过*/
